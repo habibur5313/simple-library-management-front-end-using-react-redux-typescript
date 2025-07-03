@@ -2,7 +2,9 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // https://simplelibrarymanagement.vercel.app/api
 export const baseApi = createApi({
   reducerPath: "baseApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api" }),
+  baseQuery: fetchBaseQuery({
+  baseUrl: 'https://simplelibrarymanagement.vercel.app/api/',
+}),
   tagTypes: ["book"],
   endpoints: (builder) => ({
     getBooks: builder.query({
