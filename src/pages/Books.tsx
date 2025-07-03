@@ -16,8 +16,16 @@ export const Books = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center">
-        <h1>Books</h1>
+      <div className="mt-10 mb-4">
+        <h1 className="text-3xl font-bold text-center">Books</h1>
+        <p className="text-xl text-center max-w-lg mx-auto">
+          Browse the complete list of books available in the library. Add new
+          books with details like title, author, and genre. Borrow books by
+          selecting quantity and due date. Delete or manage entries to keep the
+          library updated.
+        </p>
+      </div>
+      <div className="flex justify-end items-center">
         <Tabs defaultValue="All">
           <TabsList className="hidden md:block">
             <TabsTrigger value="All">All</TabsTrigger>
@@ -29,7 +37,7 @@ export const Books = () => {
           </TabsList>
         </Tabs>
       </div>
-      <div className="grid grid-cols-3 gap-4 mt-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
         {data?.data.map((book: IBook) => (
           <BookCard key={book._id} book={book}></BookCard>
         ))}

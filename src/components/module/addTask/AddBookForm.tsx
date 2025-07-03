@@ -31,8 +31,6 @@
 //     // setValue,
 //   } = useForm();
 
-//   const [createBook, { isLoading }] = useCreateBookMutation();
-
 //   const onSubmit = async (data) => {
 //     console.log(data);
 //     try {
@@ -95,7 +93,9 @@ export function AddBookForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
-        {/* title */}
+        {/* title and author */}
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-7">
+          {/* title */}
         <FormField
           control={form.control}
           name="title"
@@ -121,7 +121,10 @@ export function AddBookForm() {
             </FormItem>
           )}
         />
-        {/* Genre */}
+</div>
+{/* genre and isbn */}
+       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-7">
+         {/* Genre */}
         <FormField
           control={form.control}
           name="genre"
@@ -159,8 +162,10 @@ export function AddBookForm() {
             </FormItem>
           )}
         />
-
-        {/* Description */}
+       </div>
+       {/* description and copies */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-7">
+          {/* Description */}
         <FormField
           control={form.control}
           name="description"
@@ -186,7 +191,7 @@ export function AddBookForm() {
             </FormItem>
           )}
         />
-
+        </div>
         {/* Available */}
         <FormField
           control={form.control}

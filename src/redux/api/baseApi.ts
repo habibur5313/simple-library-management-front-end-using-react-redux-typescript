@@ -26,11 +26,21 @@ export const baseApi = createApi({
       }),
       invalidatesTags: ["book"],  // invalidate book list cache on delete
     }),
+     // ✅ Borrow book mutation
+    borrowBook: builder.mutation({
+      query: (borrowData) => ({
+        url: `/borrow`,
+        method: "POST",
+        body: borrowData,
+      }),
+      invalidatesTags: ["book"],
+    }),
   }),
 });
 
 export const {
   useGetBooksQuery,
   useCreateBookMutation,
-  useDeleteBookMutation,   // <-- export the delete mutation hook
+  useDeleteBookMutation,
+  useBorrowBookMutation,
 } = baseApi;
