@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-// https://simplelibrarymanagement.vercel.app/api
+
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({
-  baseUrl: 'https://simplelibrarymanagement.vercel.app/api/',
-}),
+    baseUrl: 'https://simplelibrarymanagement.vercel.app/api/',
+  }),
   tagTypes: ["book"],
   endpoints: (builder) => ({
     getBooks: builder.query({
@@ -19,7 +19,18 @@ export const baseApi = createApi({
       }),
       invalidatesTags: ["book"],
     }),
+    deleteBook: builder.mutation({
+      query: (id: string) => ({
+        url: `/books/${id}`,  // DELETE request to /books/:id
+        method: "DELETE",
+      }),
+      invalidatesTags: ["book"],  // invalidate book list cache on delete
+    }),
   }),
 });
 
-export const {useGetBooksQuery,useCreateBookMutation} = baseApi;
+export const {
+  useGetBooksQuery,
+  useCreateBookMutation,
+  useDeleteBookMutation,   // <-- export the delete mutation hook
+} = baseApi;
