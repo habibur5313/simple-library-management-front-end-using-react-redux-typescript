@@ -14,12 +14,13 @@ export const Navbar = () => {
             <TabsTrigger className="text-xl " value="Books">
               <Link to={"books"}>Books</Link>
             </TabsTrigger>
-            <TabsTrigger className="text-xl " value="Borrow Summary">
-              <Link to={"borrow-summary"}>Borrow Summary</Link>
-            </TabsTrigger>
             <TabsTrigger className="text-xl " value="Add Book">
               <Link to={"add-book"}>Add Book</Link>
             </TabsTrigger>
+            <TabsTrigger className="text-xl " value="Borrow Summary">
+              <Link to={"borrow-summary"}>Borrow Summary</Link>
+            </TabsTrigger>
+            
           </TabsList>
         </Tabs>
         <ModeToggle></ModeToggle>

@@ -29,6 +29,7 @@ import { format } from "date-fns";
 import { BookOpen, CalendarIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
+import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
 type BorrowFormProps = {
@@ -37,6 +38,7 @@ type BorrowFormProps = {
 
 export function BorrowFrom({ id }: BorrowFormProps) {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate()
 
   const form = useForm();
   const [borrowBook] = useBorrowBookMutation();
@@ -73,6 +75,7 @@ export function BorrowFrom({ id }: BorrowFormProps) {
       }
       setOpen(false);
       form.reset();
+      navigate('/borrow-summary')
     } catch (err) {
       const error = err as APIError;
       Swal.fire({

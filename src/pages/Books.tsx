@@ -1,3 +1,4 @@
+import { AddBookModal } from "@/components/module/addTask/AddBookModal";
 import { BookCard } from "@/components/module/books/BookCard";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useGetBooksQuery } from "@/redux/api/baseApi";
@@ -25,7 +26,10 @@ export const Books = () => {
           library updated.
         </p>
       </div>
-      <div className="flex justify-end items-center">
+      <div className="flex justify-between items-center">
+        <div>
+          <AddBookModal></AddBookModal>
+        </div>
         <Tabs defaultValue="All">
           <TabsList className="hidden md:block">
             <TabsTrigger value="All">All</TabsTrigger>
