@@ -3,6 +3,8 @@ import { Books } from "../pages/Books";
 import { BorrowSummary } from "../pages/BorrowSummary";
 import { AddBook } from "../pages/AddBook";
 import { App } from "../App";
+import { Home } from "@/pages/Home";
+import { BooksDetails } from "@/components/module/books/booksDetails";
 
 export const router = createBrowserRouter([
   {
@@ -11,11 +13,15 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "",
-        Component: Books,
+        Component: Home,
       },
       {
         path: "books",
         Component: Books,
+      },
+      {
+        path: "books/:id",
+        Component: BooksDetails,
       },
       {
         path: "borrow-summary",

@@ -6,8 +6,8 @@ import { format } from "date-fns";
 import type { IBook } from "@/types";
 import { Trash2} from "lucide-react";
 import { useDeleteBookMutation } from "@/redux/api/baseApi";
-import { BorrowFrom } from "./BorrowFrom";
 import Swal from "sweetalert2";
+import { BorrowFrom } from "../books/BorrowFrom";
 
 interface BookCardProps {
   book: IBook;
@@ -18,7 +18,6 @@ export const BookCard = ({ book }: BookCardProps) => {
   const [deleteBook] = useDeleteBookMutation();
 
   const handleDelete = () => {
-    console.log(book._id)
     Swal.fire({
   title: "Are you sure?",
   text: "You won't be able to revert this!",

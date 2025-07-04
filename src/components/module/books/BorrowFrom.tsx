@@ -100,10 +100,12 @@ export function BorrowFrom({ id }: BorrowFormProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="flex items-center gap-1">
-          <BookOpen className="w-4 h-4" />
-          Borrow
-        </Button>
+  <Button
+    size="icon"
+    className="h-8 w-8 bg-emerald-100 text-emerald-600 hover:bg-emerald-200"
+  >
+    <BookOpen className="w-4 h-4" />
+  </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

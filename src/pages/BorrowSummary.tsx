@@ -1,12 +1,13 @@
 import { BorrowCard } from "@/components/module/borrowSummary/BorrowCard";
 import { useGetBorrowBookQuery } from "@/redux/api/baseApi";
+import { Loader } from "@/sharedFile/Loader";
 import type { IBorrow } from "@/types";
 
 export const BorrowSummary = () => {
-  const { data, isLoading, isError } = useGetBorrowBookQuery(undefined);
-  console.log(isError,'borrow summary');
+  const { data, isLoading } = useGetBorrowBookQuery(undefined);
+
   if (isLoading) {
-    <p>loading....</p>;
+    return <Loader text="Loading borrow summary..." />;
   }
   return (
     <div>

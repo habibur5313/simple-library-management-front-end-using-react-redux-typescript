@@ -9,9 +9,9 @@ export const App = () => {
         <div className="pb-6 pt-4 px-5">
           <Navbar></Navbar>
         </div>
-        <div className="w-11/12 mx-auto  min-h-[calc(100vh-410px)]">
-          <Outlet></Outlet>
-        </div>
+         <div className="min-h-[calc(100vh-410px)]">
+           <Outlet></Outlet>
+         </div>
       </div>
       <Footer></Footer>
     </>
