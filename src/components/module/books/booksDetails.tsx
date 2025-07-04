@@ -1,6 +1,6 @@
 import { useGetSingleBookQuery } from "@/redux/api/baseApi";
-import { useParams } from "react-router-dom"; // ✅ Correct import
-import { Loader } from "@/sharedFile/Loader"; // Optional loader component
+import { useParams } from "react-router-dom"; 
+import { Loader } from "@/sharedFile/Loader"; 
 
 export const BooksDetails = () => {
   const params = useParams();

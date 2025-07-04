@@ -29,7 +29,7 @@ import { format } from "date-fns";
 import { BookOpen, CalendarIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 type BorrowFormProps = {
@@ -38,7 +38,8 @@ type BorrowFormProps = {
 
 export function BorrowFrom({ id }: BorrowFormProps) {
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const form = useForm();
   const [borrowBook] = useBorrowBookMutation();
@@ -75,7 +76,7 @@ export function BorrowFrom({ id }: BorrowFormProps) {
       }
       setOpen(false);
       form.reset();
-      navigate('/borrow-summary')
+      navigate("/borrow-summary");
     } catch (err) {
       const error = err as APIError;
       Swal.fire({
@@ -100,12 +101,16 @@ export function BorrowFrom({ id }: BorrowFormProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-  <Button
-    size="icon"
-    className="h-8 w-8 bg-emerald-100 text-emerald-600 hover:bg-emerald-200"
-  >
-    <BookOpen className="w-4 h-4" />
-  </Button>
+        <Button
+          className={
+            pathname === "/"
+              ? "flex items-center gap-1"
+              : "h-8 w-8 bg-emerald-100 text-emerald-600 hover:bg-emerald-200"
+          }
+        >
+          <BookOpen className="w-4 h-4" />
+          {pathname === "/" && "Borrow"}
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
