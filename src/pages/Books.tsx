@@ -16,9 +16,9 @@ export const Books = () => {
 
   return (
     <div>
-      <div className="mt-10 mb-4">
-        <h1 className="text-3xl font-bold text-center">Books</h1>
-        <p className="text-xl text-center max-w-lg mx-auto">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold tracking-tight text-center">Books</h1>
+        <p className="text-muted-foreground text-xl mt-1 text-center max-w-lg mx-auto">
           Browse the complete list of books available in the library. Add new
           books with details like title, author, and genre. Borrow books by
           selecting quantity and due date. Delete or manage entries to keep the

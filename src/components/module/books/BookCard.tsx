@@ -7,6 +7,7 @@ import type { IBook } from "@/types";
 import { Trash2} from "lucide-react";
 import { useDeleteBookMutation } from "@/redux/api/baseApi";
 import { BorrowFrom } from "./BorrowFrom";
+import Swal from "sweetalert2";
 
 interface BookCardProps {
   book: IBook;
@@ -15,6 +16,28 @@ interface BookCardProps {
 export const BookCard = ({ book }: BookCardProps) => {
 
   const [deleteBook] = useDeleteBookMutation();
+
+  const handleDelete = () => {
+    console.log(book._id)
+    Swal.fire({
+  title: "Are you sure?",
+  text: "You won't be able to revert this!",
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonColor: "#3085d6",
+  cancelButtonColor: "#d33",
+  confirmButtonText: "Yes, delete it!"
+}).then((result) => {
+  if (result.isConfirmed) {
+    deleteBook(book._id)
+    Swal.fire({
+      title: "Deleted!",
+      text: "This book has been deleted.",
+      icon: "success"
+    });
+  }
+});
+  }
 
   return (
     <Card className="w-full max-w-md mx-auto rounded-2xl border border-gray-200 shadow-md hover:shadow-lg transition">
@@ -41,7 +64,7 @@ export const BookCard = ({ book }: BookCardProps) => {
           </p>
           <p>
             <span className="font-medium text-gray-700">Available:</span>
-            This book is {book.available ? " Available": 'Not Available'}
+            This book is {book.copies >= 1 ? " Available": 'Not Available'}
           </p>
         </div>
         <Separator />
@@ -53,7 +76,7 @@ export const BookCard = ({ book }: BookCardProps) => {
         <div className="pt-4 flex justify-between">
           <BorrowFrom id={book._id}></BorrowFrom>
 
-          <Button onClick={() => deleteBook(book._id)} variant="destructive" className="flex items-center gap-1">
+          <Button onClick={handleDelete} variant="destructive" className="flex items-center gap-1">
             <Trash2 className="w-4 h-4" />
             Delete 
           </Button>

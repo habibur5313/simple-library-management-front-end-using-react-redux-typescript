@@ -29,6 +29,7 @@ import { format } from "date-fns";
 import { BookOpen, CalendarIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
+import Swal from "sweetalert2";
 
 type BorrowFormProps = {
   id: string;
@@ -40,17 +41,57 @@ export function BorrowFrom({ id }: BorrowFormProps) {
   const form = useForm();
   const [borrowBook] = useBorrowBookMutation();
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    const bookData = {
-      book: id,
-      quantity: data.quantity,
-      dueDate: data.dueDate,
+  type APIError = {
+    data?: {
+      message?: string;
+      error?: string;
     };
-    console.log(bookData, "inside book data");
-    const res = await borrowBook(bookData).unwrap();
-    console.log("inside onSubmit", res)
-    setOpen(false);
-    form.reset();
+    status?: number;
+  };
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    try {
+      const bookData = {
+        book: id,
+        quantity: data.quantity,
+        dueDate: data.dueDate,
+      };
+
+      const res = await borrowBook(bookData).unwrap();
+      if (res.success) {
+        Swal.fire({
+          position: "top",
+          icon: "success",
+          title: res?.message,
+          timer: 4000,
+          timerProgressBar: true,
+          allowOutsideClick: true,
+          allowEscapeKey: true,
+          showConfirmButton: true,
+          confirmButtonText: "Close",
+        });
+      }
+      setOpen(false);
+      form.reset();
+    } catch (err) {
+      const error = err as APIError;
+      Swal.fire({
+        position: "top",
+        icon: "error",
+        title: error?.data?.message || "Something went wrong!",
+        text: error?.data?.error || "",
+        timer: 2000,
+        timerProgressBar: true,
+        allowOutsideClick: true,
+        allowEscapeKey: true,
+        showConfirmButton: true,
+        confirmButtonText: "Close",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.close(); // explicitly close on button click
+        }
+      });
+    }
   };
 
   return (

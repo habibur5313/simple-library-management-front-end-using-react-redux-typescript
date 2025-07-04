@@ -10,3 +10,12 @@ export interface IBook {
   createdAt: string
   updatedAt: string
 }
+
+
+export interface IBorrow {
+  book:{
+    title: string;
+  isbn: string;
+  },
+  totalQuantity: number;
+}

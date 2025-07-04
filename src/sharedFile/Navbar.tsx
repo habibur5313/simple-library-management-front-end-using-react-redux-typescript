@@ -6,7 +6,7 @@ export const Navbar = () => {
   return (
     <div className="flex justify-between items-center">
       <div>
-        <Link to={'/'}><h1 className="text-2xl font-semibold md:text-3xl lg:text-4xl xl:font-bold">Library Management</h1></Link>
+        <Link to={'/'}><h1 className="text-2xl font-semibold md:text-3xl lg:text-4xl xl:font-bold">LibraryHub</h1></Link>
       </div>
       <div className="sm:flex justify-center gap-5 hidden">
         <Tabs>
