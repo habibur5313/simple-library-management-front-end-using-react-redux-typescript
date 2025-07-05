@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 import { BorrowFrom } from "@/components/module/books/BorrowFrom";
 import { Link } from "react-router";
 import { EditBook } from "@/components/module/books/EditBook";
-import { useEffect} from "react";
+import { useEffect } from "react";
 import {
   Select,
   SelectContent,
@@ -52,7 +52,7 @@ export const Books = () => {
     return <Loader text="Loading books..." />;
   }
 
-   const genreOptions = [
+  const genreOptions = [
     "FICTION",
     "NON_FICTION",
     "SCIENCE",
@@ -61,13 +61,10 @@ export const Books = () => {
     "FANTASY",
   ];
 
-
-const handleSelect = (value: string) => {
-  console.log("Selected genre:", value);
-  // Do your filtering or logic here directly
-};
-
-
+  const handleSelect = (value: string) => {
+    console.log("Selected genre:", value);
+    // Do your filtering or logic here directly
+  };
 
   return (
     <div>
@@ -83,23 +80,21 @@ const handleSelect = (value: string) => {
       <div className="mb-4 flex justify-between">
         <AddBookModal />
         <div>
-<Select onValueChange={handleSelect}>
-  <SelectTrigger className="w-[180px]">
-    <SelectValue placeholder="Filter by genre" />
-  </SelectTrigger>
-  <SelectContent>
-    <SelectGroup>
-      <SelectLabel>Filters</SelectLabel>
-      {genreOptions.map((genre) => (
-        <SelectItem key={genre} value={genre}>
-          {genre}
-        </SelectItem>
-      ))}
-    </SelectGroup>
-  </SelectContent>
-</Select>
-
-
+          <Select onValueChange={handleSelect}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Filter by genre" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Filters</SelectLabel>
+                {genreOptions.map((genre) => (
+                  <SelectItem key={genre} value={genre}>
+                    {genre}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
