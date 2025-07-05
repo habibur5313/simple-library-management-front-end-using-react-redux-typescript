@@ -1,9 +1,11 @@
+import { BannerSlider } from "@/components/module/landingPage/Banner";
 import { LandingPageBooks } from "@/components/module/landingPage/LandingPageBooks";
 
 export const Home = () => {
   return (
     <div>
       <div className="w-11/12 mx-auto">
+      <BannerSlider></BannerSlider>
         <LandingPageBooks></LandingPageBooks>
       </div>
     </div>

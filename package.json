@@ -1,5 +1,5 @@
 {
-  "name": "assignment-4",
+  "name": "LibraryHub",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -35,6 +35,7 @@
     "react-router-dom": "^7.6.3",
     "sonner": "^2.0.5",
     "sweetalert2": "^11.22.2",
+    "swiper": "^11.2.10",
     "tailwind-merge": "^3.3.1",
     "zod": "^3.25.71"
   },

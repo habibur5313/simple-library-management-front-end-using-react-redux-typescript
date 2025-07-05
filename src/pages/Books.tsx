@@ -35,7 +35,6 @@ export const Books = () => {
     });
   };
 
-
   if (isLoading) {
     return <Loader text="Loading books..." />;
   }
@@ -45,11 +44,12 @@ export const Books = () => {
       <div className="mb-6">
         <h1 className="text-3xl font-bold tracking-tight text-center">Books</h1>
         <p className="text-muted-foreground text-xl mt-1 text-center max-w-lg mx-auto">
-          Browse all books, manage entries, and perform actions like viewing,
-          editing, borrowing or deleting.
+          Browse the complete list of books available in the library. Add new
+          books with details like title, author, and genre. Borrow books by
+          selecting quantity and due date. Delete or manage entries to keep the
+          library updated.
         </p>
       </div>
-
       <div className="mb-4">
         <AddBookModal />
       </div>
@@ -101,7 +101,7 @@ export const Books = () => {
                   </Link>
                   {/* Edit */}
                   <EditBook book={book}></EditBook>
-                    
+
                   {/* Borrow */}
                   <BorrowFrom id={book._id}></BorrowFrom>
                   {/* Delete */}
