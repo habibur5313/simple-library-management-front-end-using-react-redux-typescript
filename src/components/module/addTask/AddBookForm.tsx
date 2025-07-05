@@ -1,52 +1,3 @@
-// // // ✅ Schema for form validation
-// // const bookSchema = z.object({
-// //   title: z.string().min(1, "Title is required"),
-// //   author: z.string().min(1, "Author is required"),
-// //   genre: z.enum([
-// //     "FICTION",
-// //     "NON_FICTION",
-// //     "SCIENCE",
-// //     "HISTORY",
-// //     "BIOGRAPHY",
-// //     "FANTASY",
-// //   ]),
-// //   isbn: z.string().min(1, "ISBN is required"),
-// //   description: z.string().optional(),
-// //   copies: z
-// //     .number({ invalid_type_error: "Copies must be a number" })
-// //     .min(0, "Must be at least 0"),
-// //   available: z.boolean().default(true),
-// // });
-
-// // type BookFormValues = z.infer<typeof bookSchema>;
-
-// export const AddBookForm = () => {
-//   const {
-//     register,
-//     handleSubmit,
-//     reset,
-//     control,
-//     // formState: { errors },
-//     // setValue,
-//   } = useForm();
-
-//   const onSubmit = async (data) => {
-//     console.log(data);
-//     try {
-//       await createBook(data).unwrap();
-//       toast.success("Book added successfully!");
-//       reset();
-//     } catch (error: any) {
-//       toast.error(error?.data?.message || "Failed to add book");
-//     }
-//   };
-
-//       {/* Available */}
-//       <div className="flex items-center gap-2">
-//         <input type="checkbox" {...register("available")} className="w-4 h-4" />
-//         <Label htmlFor="available">Available</Label>
-//       </div>
-
 import {
   Form,
   FormControl,
@@ -63,14 +14,27 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
-import { useCreateBookMutation } from "@/redux/api/baseApi";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { bookSchema, type BookFormValues } from "@/lib/validation/book.schema";
+import { useCreateBookMutation } from "@/redux/api/baseApi";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
-export function AddBookForm() {
-  const form = useForm();
+export const AddBookForm = () => {
+  const form = useForm<BookFormValues>({
+    resolver: zodResolver(bookSchema),
+    defaultValues: {
+      title: "",
+      author: "",
+      genre: undefined,
+      isbn: "",
+      description: "",
+      copies: 1,
+      available: true,
+    },
+  });
 
   const [createBook] = useCreateBookMutation();
   const navigate = useNavigate();
@@ -84,7 +48,6 @@ export function AddBookForm() {
     "FANTASY",
   ];
 
-
   type APIError = {
     data?: {
       message?: string;
@@ -93,48 +56,32 @@ export function AddBookForm() {
     status?: number;
   };
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  const onSubmit: SubmitHandler<BookFormValues> = async (data) => {
+    console.log(data)
     try {
       const res = await createBook(data).unwrap();
       if (res.success) {
         Swal.fire({
-          position: "top",
           icon: "success",
-          title: res?.message,
-          timer: 4000,
-          timerProgressBar: true,
-          allowOutsideClick: true,
-          allowEscapeKey: true,
+          title: res.message,
+          timer: 3000,
           showConfirmButton: true,
-          confirmButtonText: "Close",
         });
         form.reset();
         navigate("/books");
       }
-    } catch (err) {
-      const error = err as APIError;
-      console.log(error);
-      // Swal.fire({
-      //   position: "top",
-      //   icon: "error",
-      //   title: error?.data?.message || "Something went wrong!",
-      //   text: error?.data?.error || "",
-      //   timer: 2000,
-      //   timerProgressBar: true,
-      //   allowOutsideClick: true,
-      //   allowEscapeKey: true,
-      //   showConfirmButton: true,
-      //   confirmButtonText: "Close",
-      // }).then((result) => {
-      //   if (result.isConfirmed) {
-      //     Swal.close(); // explicitly close on button click
-      //   }
-      // });
+    } catch (error) {
+      const err = error as APIError;
+      Swal.fire({
+        icon: "error",
+        title: err?.data?.message || "Error",
+        text: err?.data?.error || "Something went wrong",
+      });
     }
   };
 
   return (
-    <Form {...form}>
+    <Form<BookFormValues> {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-4"
@@ -246,13 +193,13 @@ export function AddBookForm() {
           control={form.control}
           name="available"
           render={({ field }) => (
-            <FormItem className="flex gap-3 items-center">
+            <FormItem className="flex items-center space-x-2">
               <FormLabel>Available</FormLabel>
               <FormControl>
-                <Input
+                <input
                   type="checkbox"
-                  {...field}
-                  value={field.value || ""}
+                  checked={field.value}
+                  onChange={(e) => field.onChange(e.target.checked)}
                   className="w-4 h-4"
                 />
               </FormControl>
@@ -263,4 +210,4 @@ export function AddBookForm() {
       </form>
     </Form>
   );
-}
+};
