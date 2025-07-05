@@ -1,13 +1,22 @@
 import { BookCard } from "@/components/module/landingPage/BookCard";
 import { Button } from "@/components/ui/button";
-import { useGetBooksLimitQuery } from "@/redux/api/baseApi";
+import {  useGetBooksQuery } from "@/redux/api/baseApi";
 import { Loader } from "@/sharedFile/Loader";
 import type { IBook } from "@/types";
 import { Book } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
 export const LandingPageBooks = () => {
-  const { data, isLoading } = useGetBooksLimitQuery(undefined);
+    const [filters, setFilters] = useState<{
+    limit?: number;
+  }>({});
+  const { data, isLoading } = useGetBooksQuery(filters);
+
+useEffect(() => {
+    const limit = 6;
+  setFilters({limit})
+},[])
 
   if (isLoading) {
     return <Loader text="Loading books..." />;

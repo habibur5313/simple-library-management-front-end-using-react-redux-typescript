@@ -27,7 +27,6 @@ export const Books = () => {
     document.title = "Books | LibraryHub";
   }, []);
 
-  // Component এর শুরুতে
   const [filters, setFilters] = useState<{
     genre?: string;
     limit?: number;

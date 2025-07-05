@@ -20,11 +20,6 @@ export const baseApi = createApi({
       },
        providesTags: ["book"],
     }),
-    // limited book get query
-    getBooksLimit: builder.query({
-      query: () => `/books?limit=6`,
-      providesTags: ["book"],
-    }),
     // single book get query
     getSingleBook: builder.query({
       query: (id: string) => `/books/${id}`,
@@ -75,7 +70,6 @@ export const baseApi = createApi({
 
 export const {
   useGetBooksQuery,
-  useGetBooksLimitQuery,
   useGetSingleBookQuery,
   useCreateBookMutation,
   useDeleteBookMutation,
