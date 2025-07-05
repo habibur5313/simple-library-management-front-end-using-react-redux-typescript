@@ -5,6 +5,7 @@ import { AddBook } from "../pages/AddBook";
 import { App } from "../App";
 import { Home } from "@/pages/Home";
 import { BooksDetails } from "@/components/module/books/booksDetails";
+import Error from "@/error/Error";
 
 export const router = createBrowserRouter([
   {
@@ -33,4 +34,8 @@ export const router = createBrowserRouter([
       }
     ],
   },
+      {
+        path: "*",
+        Component: Error
+      }
 ]);

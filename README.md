@@ -1,7 +1,3 @@
-
----
-
-````markdown
 # 📚 LibraryHub – Minimal Library Management System
 
 **LibraryHub** is a minimalist, responsive frontend web application for managing books in a library. Built using **React**, **TypeScript**, and **Redux Toolkit Query**, it integrates with a RESTful API to enable users to view, add, edit, delete, and borrow books.
