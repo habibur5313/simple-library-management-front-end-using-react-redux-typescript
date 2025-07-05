@@ -3,11 +3,12 @@ import { useGetBooksQuery, useDeleteBookMutation } from "@/redux/api/baseApi";
 import { Loader } from "@/sharedFile/Loader";
 import type { IBook } from "@/types";
 import { Button } from "@/components/ui/button";
-import { Trash2, Eye, Pencil } from "lucide-react";
+import { Trash2, Eye } from "lucide-react";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import { BorrowFrom } from "@/components/module/books/BorrowFrom";
 import { Link } from "react-router";
+import { EditBook } from "@/components/module/books/EditBook";
 
 export const Books = () => {
   const { data, isLoading } = useGetBooksQuery(undefined);
@@ -34,10 +35,6 @@ export const Books = () => {
     });
   };
 
-  const handleEdit = (book: IBook) => {
-    console.log("Edit book:", book);
-    // TODO: open a modal with form populated
-  };
 
   if (isLoading) {
     return <Loader text="Loading books..." />;
@@ -103,13 +100,8 @@ export const Books = () => {
                     </Button>
                   </Link>
                   {/* Edit */}
-                  <Button
-                    onClick={() => handleEdit(book)}
-                    size="icon"
-                    className="h-8 w-8 bg-amber-100 text-amber-600 hover:bg-amber-200"
-                  >
-                    <Pencil className="w-4 h-4" />
-                  </Button>
+                  <EditBook book={book}></EditBook>
+                    
                   {/* Borrow */}
                   <BorrowFrom id={book._id}></BorrowFrom>
                   {/* Delete */}
