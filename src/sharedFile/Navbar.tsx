@@ -1,6 +1,7 @@
 import { ModeToggle } from "@/components/mode-toggle";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link } from "react-router";
+import { DropDownMenu } from "./DropDownMenu";
 
 export const Navbar = () => {
   return (
@@ -23,6 +24,10 @@ export const Navbar = () => {
             
           </TabsList>
         </Tabs>
+        <ModeToggle></ModeToggle>
+      </div>
+      <div className="sm:hidden flex gap-3">
+        <DropDownMenu></DropDownMenu>
         <ModeToggle></ModeToggle>
       </div>
     </div>

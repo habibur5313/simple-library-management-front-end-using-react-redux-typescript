@@ -4,40 +4,15 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import type { IBook } from "@/types";
-import { Trash2} from "lucide-react";
-import { useDeleteBookMutation } from "@/redux/api/baseApi";
-import Swal from "sweetalert2";
+import { Eye } from "lucide-react";
 import { BorrowFrom } from "../books/BorrowFrom";
+import { Link } from "react-router";
 
 interface BookCardProps {
   book: IBook;
 }
 
 export const BookCard = ({ book }: BookCardProps) => {
-
-  const [deleteBook] = useDeleteBookMutation();
-
-  const handleDelete = () => {
-    Swal.fire({
-  title: "Are you sure?",
-  text: "You won't be able to revert this!",
-  icon: "warning",
-  showCancelButton: true,
-  confirmButtonColor: "#3085d6",
-  cancelButtonColor: "#d33",
-  confirmButtonText: "Yes, delete it!"
-}).then((result) => {
-  if (result.isConfirmed) {
-    deleteBook(book._id)
-    Swal.fire({
-      title: "Deleted!",
-      text: "This book has been deleted.",
-      icon: "success"
-    });
-  }
-});
-  }
-
   return (
     <Card className="w-full max-w-md mx-auto rounded-2xl border border-gray-200 shadow-md hover:shadow-lg transition">
       <CardHeader>
@@ -63,7 +38,7 @@ export const BookCard = ({ book }: BookCardProps) => {
           </p>
           <p>
             <span className="font-medium text-gray-700">Available:</span>
-            This book is {book.copies >= 1 ? " Available": 'Not Available'}
+            This book is {book.copies >= 1 ? " Available" : "Not Available"}
           </p>
         </div>
         <Separator />
@@ -75,10 +50,11 @@ export const BookCard = ({ book }: BookCardProps) => {
         <div className="pt-4 flex justify-between">
           <BorrowFrom id={book._id}></BorrowFrom>
 
-          <Button onClick={handleDelete} variant="destructive" className="flex items-center gap-1">
-            <Trash2 className="w-4 h-4" />
-            Delete 
-          </Button>
+          <Link to={`/books/${book._id}`}>
+            <Button className="flex items-center gap-1 bg-blue-100 text-blue-600 hover:bg-blue-200">
+              <Eye className="w-4 h-4" /> View
+            </Button>
+          </Link>
         </div>
       </CardContent>
     </Card>
