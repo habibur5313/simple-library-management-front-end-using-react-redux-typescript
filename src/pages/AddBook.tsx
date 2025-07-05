@@ -1,6 +1,10 @@
 import { AddBookForm } from "@/components/module/addTask/AddBookForm";
+import { useEffect } from "react";
 
 export const AddBook = () => {
+    useEffect(() => {
+      document.title = "Add book | LibraryHub";
+    }, []);
   return (
     <div>
       <div className="mb-6">

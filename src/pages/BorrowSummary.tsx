@@ -2,8 +2,12 @@ import { BorrowCard } from "@/components/module/borrowSummary/BorrowCard";
 import { useGetBorrowBookQuery } from "@/redux/api/baseApi";
 import { Loader } from "@/sharedFile/Loader";
 import type { IBorrow } from "@/types";
+import { useEffect } from "react";
 
 export const BorrowSummary = () => {
+    useEffect(() => {
+      document.title = "borrow summary | LibraryHub";
+    }, []);
   const { data, isLoading } = useGetBorrowBookQuery(undefined);
 
   if (isLoading) {

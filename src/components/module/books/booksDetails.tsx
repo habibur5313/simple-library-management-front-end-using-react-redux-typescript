@@ -1,8 +1,12 @@
 import { useGetSingleBookQuery } from "@/redux/api/baseApi";
 import { useParams } from "react-router-dom"; 
 import { Loader } from "@/sharedFile/Loader"; 
+import { useEffect } from "react";
 
 export const BooksDetails = () => {
+    useEffect(() => {
+      document.title = "books details | LibraryHub";
+    }, []);
   const params = useParams();
   const bookId = params?.id as string;
 

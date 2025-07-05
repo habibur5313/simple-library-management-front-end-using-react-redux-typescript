@@ -9,8 +9,12 @@ import Swal from "sweetalert2";
 import { BorrowFrom } from "@/components/module/books/BorrowFrom";
 import { Link } from "react-router";
 import { EditBook } from "@/components/module/books/EditBook";
+import { useEffect } from "react";
 
 export const Books = () => {
+    useEffect(() => {
+      document.title = "Books | LibraryHub";
+    }, []);
   const { data, isLoading } = useGetBooksQuery(undefined);
   const [deleteBook] = useDeleteBookMutation();
 

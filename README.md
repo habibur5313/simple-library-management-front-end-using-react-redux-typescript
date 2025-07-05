@@ -68,7 +68,7 @@
 
 ```bash
 git clone https://github.com/habibur5313/simple-library-management-front-end-using-react-redux-typescript.git
-cd libraryhub
+cd simple-library-management-front-end-using-react-redux-typescript
 npm install
 ````
 
