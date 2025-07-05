@@ -13,19 +13,33 @@ import { useEffect } from "react";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
+import { useState } from "react";
 
 export const Books = () => {
   useEffect(() => {
     document.title = "Books | LibraryHub";
   }, []);
-  const { data, isLoading } = useGetBooksQuery(undefined);
+
+  // Component এর শুরুতে
+  const [filters, setFilters] = useState<{
+    genre?: string;
+    limit?: number;
+    sortBy?: string;
+    sort?: "asc" | "desc";
+  }>({});
+
+  // Query call
+  const { data, isLoading } = useGetBooksQuery(filters);
+
   const [deleteBook] = useDeleteBookMutation();
+  const form = useForm();
 
   const handleDelete = (id: string) => {
     Swal.fire({
@@ -53,6 +67,7 @@ export const Books = () => {
   }
 
   const genreOptions = [
+    "ALL",
     "FICTION",
     "NON_FICTION",
     "SCIENCE",
@@ -61,9 +76,14 @@ export const Books = () => {
     "FANTASY",
   ];
 
-  const handleSelect = (value: string) => {
-    console.log("Selected genre:", value);
-    // Do your filtering or logic here directly
+  const onSubmit: SubmitHandler<FieldValues> = (formData) => {
+    const genre = formData.genre === "ALL" ? undefined : formData.genre;
+    const limit = formData.limit ? Number(formData.limit) : undefined;
+    const sortBy = formData.sortBy;
+    const sort = formData.sort;
+    console.log(genre, limit,sortBy,sort);
+
+     setFilters({ genre, limit, sortBy, sort });
   };
 
   return (
@@ -77,25 +97,107 @@ export const Books = () => {
           library updated.
         </p>
       </div>
-      <div className="mb-4 flex justify-between">
+      <div className="mb-4 flex justify-between items-center">
         <AddBookModal />
-        <div>
-          <Select onValueChange={handleSelect}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filter by genre" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Filters</SelectLabel>
-                {genreOptions.map((genre) => (
-                  <SelectItem key={genre} value={genre}>
-                    {genre}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="flex flex-col sm:flex-row gap-3">
+              {/* genre */}
+              <FormField
+                control={form.control}
+                name="genre"
+                render={({ field }) => (
+                  <FormItem>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="filter by Genre" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {genreOptions.map((genre) => (
+                          <SelectItem key={genre} value={genre}>
+                            {genre}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {/* {errors.genre && <p className="text-red-500 text-sm">{errors.genre.message}</p>} */}
+                  </FormItem>
+                )}
+              />
+              {/* Limit */}
+              <FormField
+                control={form.control}
+                name="limit"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder="limit number"
+                        type="number"
+                        {...field}
+                        value={field.value || ""}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              {/* sortBy */}
+              <FormField
+                control={form.control}
+                name="sortBy"
+                render={({ field }) => (
+                  <FormItem>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select sortBy" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="createdAt">Created At</SelectItem>
+                        <SelectItem value="updatedAt">Updated At</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    {/* {errors.genre && <p className="text-red-500 text-sm">{errors.genre.message}</p>} */}
+                  </FormItem>
+                )}
+              />
+              {/* sortOrder */}
+              <FormField
+                control={form.control}
+                name="sort"
+                render={({ field }) => (
+                  <FormItem>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select sort Order" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="desc">Descending</SelectItem>
+                        <SelectItem value="asc">Ascending</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    {/* {errors.genre && <p className="text-red-500 text-sm">{errors.genre.message}</p>} */}
+                  </FormItem>
+                )}
+              />
+              <Button type="submit">Save changes</Button>
+            </div>
+          </form>
+        </Form>
       </div>
 
       <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-md">

@@ -4,14 +4,20 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://simplelibrarymanagement.vercel.app/api/',
+    baseUrl: "http://localhost:5000/api/",
   }),
   tagTypes: ["book"],
   endpoints: (builder) => ({
     // all books get query
     getBooks: builder.query({
-      query: () => "/books",
-      providesTags: ["book"],
+      query: (params: { genre?: string; limit?: number; sortBy?: string; sort?: "asc" | "desc" } = {}) => {
+        const query = new URLSearchParams();
+        if (params.genre) query.append("filter", params.genre);
+        if (params.limit) query.append("limit", params.limit.toString());
+        if (params.sortBy) query.append("sortBy", params.sortBy);
+        if (params.sort) query.append("sort", params.sort);
+        return `/books?${query.toString()}`;
+      },
     }),
     // limited book get query
     getBooksLimit: builder.query({
@@ -19,7 +25,7 @@ export const baseApi = createApi({
       providesTags: ["book"],
     }),
     // single book get query
-     getSingleBook: builder.query({
+    getSingleBook: builder.query({
       query: (id: string) => `/books/${id}`,
       providesTags: ["book"],
     }),
@@ -35,13 +41,13 @@ export const baseApi = createApi({
     // delete book query
     deleteBook: builder.mutation({
       query: (id: string) => ({
-        url: `/books/${id}`,  
+        url: `/books/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["book"],  
+      invalidatesTags: ["book"],
     }),
     // update book query
-     putBook: builder.mutation({
+    putBook: builder.mutation({
       query: ({ id, ...updatedData }) => ({
         url: `/books/${id}`,
         method: "PUT",
@@ -54,7 +60,7 @@ export const baseApi = createApi({
       query: () => "/borrow",
       providesTags: ["book"],
     }),
-     // Borrow book mutation
+    // Borrow book mutation
     borrowBook: builder.mutation({
       query: (borrowData) => ({
         url: `/borrow`,
