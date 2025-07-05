@@ -18,10 +18,11 @@ export const baseApi = createApi({
         if (params.sort) query.append("sort", params.sort);
         return `/books?${query.toString()}`;
       },
+       providesTags: ["book"],
     }),
     // limited book get query
     getBooksLimit: builder.query({
-      query: () => `/books?limit=9`,
+      query: () => `/books?limit=6`,
       providesTags: ["book"],
     }),
     // single book get query

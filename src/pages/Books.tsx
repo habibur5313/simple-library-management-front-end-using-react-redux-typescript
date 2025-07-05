@@ -96,107 +96,114 @@ export const Books = () => {
           library updated.
         </p>
       </div>
-      <div className="mb-4 flex justify-between items-center">
+      <div className="mb-4 flex  justify-between gap-4 overflow-x-auto">
         <AddBookModal />
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="flex flex-col sm:flex-row gap-3">
-              {/* genre */}
-              <FormField
-                control={form.control}
-                name="genre"
-                render={({ field }) => (
-                  <FormItem>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+
+        <div className="min-w-[700px] sm:min-w-0 overflow-x-auto">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <div className="flex gap-3 w-max sm:w-auto">
+                {/* genre */}
+                <FormField
+                  control={form.control}
+                  name="genre"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="w-[160px]">
+                            <SelectValue placeholder="Filter by Genre" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {genreOptions.map((genre) => (
+                            <SelectItem key={genre} value={genre}>
+                              {genre === "ALL" ? "All Genres" : genre}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+
+                {/* Limit */}
+                <FormField
+                  control={form.control}
+                  name="limit"
+                  render={({ field }) => (
+                    <FormItem>
                       <FormControl>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="filter by Genre" />
-                        </SelectTrigger>
+                        <Input
+                          className="w-[120px]"
+                          placeholder="Limit"
+                          type="number"
+                          {...field}
+                          value={field.value || ""}
+                        />
                       </FormControl>
-                      <SelectContent>
-                        {genreOptions.map((genre) => (
-                          <SelectItem key={genre} value={genre}>
-                            {genre}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {/* {errors.genre && <p className="text-red-500 text-sm">{errors.genre.message}</p>} */}
-                  </FormItem>
-                )}
-              />
-              {/* Limit */}
-              <FormField
-                control={form.control}
-                name="limit"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        placeholder="limit number"
-                        type="number"
-                        {...field}
-                        value={field.value || ""}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              {/* sortBy */}
-              <FormField
-                control={form.control}
-                name="sortBy"
-                render={({ field }) => (
-                  <FormItem>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select sortBy" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="createdAt">Created At</SelectItem>
-                        <SelectItem value="updatedAt">Updated At</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {/* {errors.genre && <p className="text-red-500 text-sm">{errors.genre.message}</p>} */}
-                  </FormItem>
-                )}
-              />
-              {/* sortOrder */}
-              <FormField
-                control={form.control}
-                name="sort"
-                render={({ field }) => (
-                  <FormItem>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select sort Order" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="desc">Descending</SelectItem>
-                        <SelectItem value="asc">Ascending</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {/* {errors.genre && <p className="text-red-500 text-sm">{errors.genre.message}</p>} */}
-                  </FormItem>
-                )}
-              />
-              <Button type="submit">Save changes</Button>
-            </div>
-          </form>
-        </Form>
+                    </FormItem>
+                  )}
+                />
+
+                {/* sortBy */}
+                <FormField
+                  control={form.control}
+                  name="sortBy"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="w-[160px]">
+                            <SelectValue placeholder="Sort By" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="createdAt">Created At</SelectItem>
+                          <SelectItem value="updatedAt">Updated At</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+
+                {/* sortOrder */}
+                <FormField
+                  control={form.control}
+                  name="sort"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="w-[160px]">
+                            <SelectValue placeholder="Sort Order" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="desc">Descending</SelectItem>
+                          <SelectItem value="asc">Ascending</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+
+                <Button type="submit" className="w-[130px]">
+                  Apply Filter
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </div>
       </div>
 
       <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-md">
