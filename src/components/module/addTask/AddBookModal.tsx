@@ -26,6 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import Swal from "sweetalert2";
 
 export const AddBookModal = () => {
   const [open, setOpen] = useState(false);
@@ -43,12 +44,51 @@ export const AddBookModal = () => {
     "FANTASY",
   ];
 
+  type APIError = {
+    data?: {
+      message?: string;
+      error?: string;
+    };
+    status?: number;
+  };
+
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-//     console.log(data);
-        const res = await createBook(data).unwrap();
-        console.log("inside onSubmit", res)
-    setOpen(false);
-    form.reset();
+    try {
+      const res = await createBook(data).unwrap();
+      if (res.success) {
+        Swal.fire({
+          position: "top",
+          icon: "success",
+          title: res?.message,
+          timer: 2000,
+          timerProgressBar: true,
+          allowOutsideClick: true,
+          allowEscapeKey: true,
+          showConfirmButton: true,
+          confirmButtonText: "Close",
+        });
+        form.reset();
+        setOpen(false);
+      }
+    } catch (err) {
+      const error = err as APIError;
+      Swal.fire({
+        position: "top",
+        icon: "error",
+        title: error?.data?.message || "Something went wrong!",
+        text: error?.data?.error || "",
+        timer: 2000,
+        timerProgressBar: true,
+        allowOutsideClick: true,
+        allowEscapeKey: true,
+        showConfirmButton: true,
+        confirmButtonText: "Close",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.close();
+        }
+      });
+    }
   };
 
   return (
@@ -69,103 +109,99 @@ export const AddBookModal = () => {
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col gap-4"
           >
-              {/* title */}
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Title</FormLabel>
+            {/* title */}
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Title</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value || ""} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            {/* Author */}
+            <FormField
+              control={form.control}
+              name="author"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Author</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value || ""} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            {/* Genre */}
+            <FormField
+              control={form.control}
+              name="genre"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Genre</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <FormControl>
-                      <Input {...field} value={field.value || ""} />
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select Genre" />
+                      </SelectTrigger>
                     </FormControl>
-                  </FormItem>
-                )}
-              />
-              {/* Author */}
-              <FormField
-                control={form.control}
-                name="author"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Author</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value || ""} />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              {/* Genre */}
-              <FormField
-                control={form.control}
-                name="genre"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Genre</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select Genre" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {genreOptions.map((genre) => (
-                          <SelectItem key={genre} value={genre}>
-                            {genre}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {/* {errors.genre && <p className="text-red-500 text-sm">{errors.genre.message}</p>} */}
-                  </FormItem>
-                )}
-              />
-              {/* ISBN */}
-              <FormField
-                control={form.control}
-                name="isbn"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>ISBN</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value || ""} />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              {/* Description */}
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Textarea {...field} value={field.value || ""} />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              {/* Copies */}
-              <FormField
-                control={form.control}
-                name="copies"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Copies</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        {...field}
-                        value={field.value || ""}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
+                    <SelectContent>
+                      {genreOptions.map((genre) => (
+                        <SelectItem key={genre} value={genre}>
+                          {genre}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {/* {errors.genre && <p className="text-red-500 text-sm">{errors.genre.message}</p>} */}
+                </FormItem>
+              )}
+            />
+            {/* ISBN */}
+            <FormField
+              control={form.control}
+              name="isbn"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>ISBN</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value || ""} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            {/* Description */}
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea {...field} value={field.value || ""} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            {/* Copies */}
+            <FormField
+              control={form.control}
+              name="copies"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Copies</FormLabel>
+                  <FormControl>
+                    <Input type="number" {...field} value={field.value || ""} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
             {/* Available */}
             <FormField
               control={form.control}

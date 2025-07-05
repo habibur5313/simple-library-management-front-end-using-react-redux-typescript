@@ -65,7 +65,6 @@ export const AddBookForm = () => {
       }
     } catch (err) {
       const error = err as APIError;
-      console.log(error);
       Swal.fire({
         position: "top",
         icon: "error",

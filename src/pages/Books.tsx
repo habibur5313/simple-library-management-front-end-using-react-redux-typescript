@@ -81,9 +81,8 @@ export const Books = () => {
     const limit = formData.limit ? Number(formData.limit) : undefined;
     const sortBy = formData.sortBy;
     const sort = formData.sort;
-    console.log(genre, limit,sortBy,sort);
 
-     setFilters({ genre, limit, sortBy, sort });
+    setFilters({ genre, limit, sortBy, sort });
   };
 
   return (

@@ -29,7 +29,6 @@ import { Pencil } from "lucide-react";
 import type { IBook } from "@/types";
 import { usePutBookMutation } from "@/redux/api/baseApi";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
 
 type EditBookProfs = {
   book: IBook;
@@ -37,7 +36,6 @@ type EditBookProfs = {
 
 export const EditBook = ({ book }: EditBookProfs) => {
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate()
 
   const form = useForm();
   const [putBook] = usePutBookMutation();
@@ -76,27 +74,25 @@ export const EditBook = ({ book }: EditBookProfs) => {
         });
         form.reset();
         setOpen(false)
-        navigate("/books");
       }
     } catch (err) {
       const error = err as APIError;
-      console.log(error);
-      // Swal.fire({
-      //   position: "top",
-      //   icon: "error",
-      //   title: error?.data?.message || "Something went wrong!",
-      //   text: error?.data?.error || "",
-      //   timer: 2000,
-      //   timerProgressBar: true,
-      //   allowOutsideClick: true,
-      //   allowEscapeKey: true,
-      //   showConfirmButton: true,
-      //   confirmButtonText: "Close",
-      // }).then((result) => {
-      //   if (result.isConfirmed) {
-      //     Swal.close(); // explicitly close on button click
-      //   }
-      // });
+      Swal.fire({
+        position: "top",
+        icon: "error",
+        title: error?.data?.message || "Something went wrong!",
+        text: error?.data?.error || "",
+        timer: 2000,
+        timerProgressBar: true,
+        allowOutsideClick: true,
+        allowEscapeKey: true,
+        showConfirmButton: true,
+        confirmButtonText: "Close",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.close(); // explicitly close on button click
+        }
+      });
     }
   };
 
